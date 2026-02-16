@@ -151,7 +151,7 @@ def encontrar_preco_ideal(target_margin, custo, peso, imposto_perc, marketplace)
 
 # --- INTERFACE PRINCIPAL ---
 marketplaces = ["Mercado Livre", "Shopee", "Shein", "TikTok", "Magalu", "Americanas"]
-margens_alvo = [0.05, 0.10, 0.15, 0.20] 
+margens_alvo = [0.05, 0.10, 0.15, 0.50] 
 
 tab1, tab2 = st.tabs(["💰 Sugestão de Preços", "📊 Simulação Livre"])
 
