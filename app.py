@@ -1,33 +1,31 @@
 import streamlit as st
 import pandas as pd
 
-# --- CONFIGURAÇÃO DA PÁGINA ---
+# 1. CONFIGURAÇÃO DA PÁGINA (Sempre no topo)
 st.set_page_config(page_title="Panthus Pro", layout="wide", page_icon="🦁")
 
-# --- ESTILIZAÇÃO CUSTOMIZADA (CSS) ---
-st.markdown("""
-# --- ESTILIZAÇÃO CUSTOMIZADA (CSS) ---
+# 2. ESTILO PANTHUS PRO (CSS para esconder menus e mudar cores)
 st.markdown("""
 <style>
-    /* Esconde o Menu do Streamlit (hambúrguer) e o Header de Deploy */
+    /* Esconde botões de Deploy, Menu Hambúrguer e Rodapé */
     #MainMenu {visibility: hidden;}
     header {visibility: hidden;}
     footer {visibility: hidden;}
-    stDeployButton {display:none;}
-
-    /* Fundo principal e textos */
+    .stDeployButton {display:none;}
+    
+    /* Fundo Escuro e Texto Branco */
     .stApp {
         background-color: #0E1117;
         color: #FFFFFF;
     }
     
-    /* Títulos e Subtítulos */
+    /* Títulos em Dourado */
     h1, h2, h3 {
         color: #FFD700 !important;
         font-weight: 700;
     }
 
-    /* Estilização dos CARDS de Preço */
+    /* Cards de Preço Profissionais */
     [data-testid="stMetric"] {
         background-color: #1A1C23;
         border: 2px solid #FFD700;
@@ -37,29 +35,16 @@ st.markdown("""
         box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
 
-    /* Valores de Preço dentro do card */
-    [data-testid="stMetricValue"] {
-        color: #FFFFFF !important;
-        font-size: 28px !important;
-    }
-
-    /* Rótulo da Meta (%) */
-    [data-testid="stMetricLabel"] {
-        color: #FFD700 !important;
-        font-size: 16px !important;
-        font-weight: bold;
-    }
+    /* Valores e Labels dentro dos cards */
+    [data-testid="stMetricValue"] { color: #FFFFFF !important; font-size: 28px !important; }
+    [data-testid="stMetricLabel"] { color: #FFD700 !important; font-size: 16px !important; font-weight: bold; }
     
-    /* Inputs de dados */
-    .stNumberInput label {
-        color: #FFD700 !important;
-        font-weight: bold;
-    }
+    /* Labels dos Inputs */
+    .stNumberInput label { color: #FFD700 !important; font-weight: bold; }
 </style>
 """, unsafe_allow_html=True)
-""", unsafe_allow_html=True)
 
-# --- SISTEMA DE LOGIN ---
+# 3. SISTEMA DE LOGIN
 def check_password():
     def password_entered():
         if st.session_state["password"] == "panthus2026":
@@ -67,10 +52,8 @@ def check_password():
             del st.session_state["password"]
         else:
             st.session_state["password_correct"] = False
-
     if st.session_state.get("password_correct", False):
         return True
-
     st.markdown("## 🔒 Área Restrita - Panthus Pro")
     st.text_input("Digite sua chave de acesso:", type="password", key="password", on_change=password_entered)
     if "password_correct" in st.session_state:
@@ -80,7 +63,7 @@ def check_password():
 if not check_password():
     st.stop()
 
-# --- INTERFACE PRINCIPAL ---
+# 4. INTERFACE E INPUTS
 st.title("🦁 Panthus: Precificação Reversa (PRO)")
 st.markdown("---")
 
@@ -96,7 +79,7 @@ with col_c:
 
 st.markdown("---")
 
-# --- MOTOR DE CÁLCULO (Oculto no Visual) ---
+# 5. REGRAS DE CÁLCULO
 def calcular_lucro_real(venda_teste, custo, peso, imposto_perc, marketplace):
     comm = 0.0
     frete = 0.0
@@ -108,7 +91,6 @@ def calcular_lucro_real(venda_teste, custo, peso, imposto_perc, marketplace):
         elif venda_teste <= 199.99: fixed=20.00
         else: fixed=26.00
         comm = (venda_teste * rate) + fixed
-        
     elif marketplace == "Mercado Livre":
         rate = 0.19
         fixed = 0.0
@@ -125,8 +107,6 @@ def calcular_lucro_real(venda_teste, custo, peso, imposto_perc, marketplace):
             elif peso <= 2.0: frete = 22.90
             elif peso <= 5.0: frete = 27.90
             else: frete = 45.90
-    
-    # ... (Demais regras simplificadas para performance)
     elif marketplace == "Shein": comm = venda_teste * 0.16; frete = 4.0 if peso < 0.3 else 5.0
     elif marketplace == "TikTok": comm = (venda_teste * 0.06) + 4.00; frete = venda_teste * 0.06
     elif marketplace == "Magalu": comm = (venda_teste * 0.18) + (3.0 if venda_teste < 79 else 0); frete = 19.90 if venda_teste >= 79 else 0
@@ -139,14 +119,14 @@ def calcular_lucro_real(venda_teste, custo, peso, imposto_perc, marketplace):
     return margem_real, lucro_liquido
 
 def encontrar_preco_ideal(target_margin, custo, peso, imposto_perc, marketplace):
-    preco_teste = custo * 1.2
+    preco_teste = custo * 1.1
     for _ in range(4000):
         m, l = calcular_lucro_real(preco_teste, custo, peso, imposto_perc, marketplace)
         if m < target_margin: preco_teste += 0.50
         else: return preco_teste, l
     return 0.0, 0.0
 
-# --- EXIBIÇÃO ---
+# 6. EXIBIÇÃO DOS RESULTADOS
 marketplaces = ["Mercado Livre", "Shopee", "Shein", "TikTok", "Magalu", "Americanas"]
 margens_alvo = [0.05, 0.15, 0.30, 0.50]
 
@@ -164,4 +144,4 @@ for mkt in marketplaces:
 
 if st.button("Sair / Logout"):
     st.session_state["password_correct"] = False
-    st.rerun
+    st.rerun()
