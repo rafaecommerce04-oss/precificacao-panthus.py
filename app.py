@@ -6,7 +6,15 @@ st.set_page_config(page_title="Panthus Pro", layout="wide", page_icon="🦁")
 
 # --- ESTILIZAÇÃO CUSTOMIZADA (CSS) ---
 st.markdown("""
+# --- ESTILIZAÇÃO CUSTOMIZADA (CSS) ---
+st.markdown("""
 <style>
+    /* Esconde o Menu do Streamlit (hambúrguer) e o Header de Deploy */
+    #MainMenu {visibility: hidden;}
+    header {visibility: hidden;}
+    footer {visibility: hidden;}
+    stDeployButton {display:none;}
+
     /* Fundo principal e textos */
     .stApp {
         background-color: #0E1117;
@@ -15,7 +23,7 @@ st.markdown("""
     
     /* Títulos e Subtítulos */
     h1, h2, h3 {
-        color: #FFD700 !important; /* Dourado Panthus */
+        color: #FFD700 !important;
         font-weight: 700;
     }
 
@@ -42,24 +50,13 @@ st.markdown("""
         font-weight: bold;
     }
     
-    /* Delta (Lucro R$) */
-    [data-testid="stMetricDelta"] {
-        background-color: #2D2F36;
-        border-radius: 5px;
-        padding: 2px 5px;
-    }
-
     /* Inputs de dados */
     .stNumberInput label {
         color: #FFD700 !important;
         font-weight: bold;
     }
-
-    /* Divisores */
-    hr {
-        border-top: 1px solid #333;
-    }
 </style>
+""", unsafe_allow_html=True)
 """, unsafe_allow_html=True)
 
 # --- SISTEMA DE LOGIN ---
