@@ -128,7 +128,7 @@ def encontrar_preco_ideal(target_margin, custo, peso, imposto_perc, marketplace)
 
 # 6. EXIBIÇÃO DOS RESULTADOS
 marketplaces = ["Mercado Livre", "Shopee", "Shein", "TikTok", "Magalu", "Americanas"]
-margens_alvo = [0.05, 0.15, 0.30, 0.50]
+margens_alvo = [0.05, 0.15, 0.30]
 
 for mkt in marketplaces:
     st.markdown(f"### {mkt}")
